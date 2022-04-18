@@ -1,0 +1,49 @@
+:root{
+  --row-columns:10;
+}
+.container{
+  display: grid;
+  place-items:center;
+}
+button{
+  border:none;
+  background:#333;
+  color:white;
+  font-weight:bold;
+  padding:10px 20px;
+  border-radius:4px;
+  margin:10px;
+  cursor:pointer;
+}
+button:hover{
+  background:rgb(145, 141, 141);
+}
+#addSand{
+  background-color: rgb(209, 167, 77);
+}
+#addWater{
+  background-color: rgb(64, 133, 224);
+}
+#mainscene{
+  display:grid;
+  grid-template-columns:repeat(var(--row-columns),1fr);
+  grid-template-rows:repeat(var(--row-columns),1fr);
+  height:350px;
+  width:350px;
+  border:4px solid #999;
+}
+.cell{
+  /* border:1px solid #999; */
+}
+.wallIn{
+  background:#555;
+  border:1px solid #999;
+}
+.sandIn{
+ background: rgb(226, 190, 111);
+ border:1px solid rgb(252, 221, 155);
+}
+.waterIn{
+  background: rgb(155, 149, 238);
+  border:1px solid rgb(220, 213, 240);
+}
