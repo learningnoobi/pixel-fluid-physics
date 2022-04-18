@@ -4,7 +4,7 @@ const mainscene = document.querySelector("#mainscene");
 const wallBtn = document.querySelector("#addWall");
 const sandBtn = document.querySelector("#addSand");
 
-let gridxgrid = 30;
+let gridxgrid = 60;
 
 
 root.style.setProperty("--row-columns", gridxgrid);
@@ -78,17 +78,18 @@ function cellListener(cell) {
 function moveSand(sanddata) {
     for(let i of sanddata){
 
-        setInterval(()=>{
-            moveDown(i)
-        }, 1000);
+        // setInterval(()=>{
+        //     moveDown(i)
+        // }, 1000);
     }
 }
 
 var currNum = gridxgrid / 2;
 
 
-function draw(i) {
-  i.classList.add("sandIn");
+function draw(id) {
+  const currentCell=document.querySelector(`[data-cellid="${id}"]`)
+  currentCell.classList.add("sandIn");
 }
 
 function unDraw(lastnum) {
@@ -97,12 +98,37 @@ function unDraw(lastnum) {
         currentCell.classList.remove("sandIn");
     }
 }
+setInterval(moveDown, 100);
+  //  setInterval(moveown, 10);
 
-function moveDown(i) {
-  let sandDataId=i.dataset.cellid
-  if (sandDataId < Math.pow(gridxgrid, 2)) {
-    draw(i);
-    sandDataId += gridxgrid;
-    unDraw(sandDataId-gridxgrid-gridxgrid)
+var sandDataId=5
+var sandDaaId=10
+
+var sandIdArr=new Array(4,884,1699,7,94,2)
+
+function moveDown(){
+  for (let i=0; i<sandIdArr.length; i++) {
+    if (sandIdArr[i] < Math.pow(gridxgrid, 2)) {
+    draw(sandIdArr[i]);
+    sandIdArr[i] += gridxgrid
+    unDraw(sandIdArr[i]-gridxgrid-gridxgrid)
+    }
   }
 }
+
+// function moveDown() {
+  
+//   if (sandDataId < Math.pow(gridxgrid, 2)) {
+//     draw(sandDataId);
+//     sandDataId += gridxgrid;
+//     unDraw(sandDataId-gridxgrid-gridxgrid)
+//   }
+// }
+// function moveown() {
+  
+//     if (sandDaaId < Math.pow(gridxgrid, 2)) {
+//       draw(sandDaaId);
+//       sandDaaId += gridxgrid;
+//       unDraw(sandDaaId-gridxgrid-gridxgrid)
+//     }
+//   }
