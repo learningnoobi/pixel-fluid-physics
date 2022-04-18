@@ -14,35 +14,19 @@ let addState = "";
 
 
 
-function checkaddState(btn,myState) {
-    addState = myState
-    btn.textContent = `In ${myState} State`; 
-    for (let i of buttons){
-        if(i.name!==myState){
-            i.textContent=`Add ${i.name}`
-        }
-    }
-}
-
 
 
 for (let btn of buttons){
     btn.addEventListener("click", (e) => {
-        const id =e.target.id
-        switch (id) {
-            case "addWall":
-                checkaddState(btn,"wall");
-                break;
-            case "addSand":
-                checkaddState(btn,"sand");
-                break
-            case "addWater":
-                checkaddState(btn,"water");
-                break
-        
-            default:
-                break;
+       let myState = e.target.name
+        addState = myState
+        btn.textContent = `In ${myState} State`; 
+        for (let i of buttons){
+            if(i.name!==myState){
+                i.textContent=`Add ${i.name}`
+            }
         }
+      
     });
 }
 
