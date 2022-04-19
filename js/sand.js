@@ -4,7 +4,7 @@ const mainscene = document.querySelector("#mainscene");
 const wallBtn = document.querySelector("#addWall");
 const sandBtn = document.querySelector("#addSand");
 
-let gridxgrid = 30
+let gridxgrid = 100
 
 root.style.setProperty("--row-columns", gridxgrid);
 
@@ -132,19 +132,42 @@ function moveSandDown() {
       draw(sandIdArr[i]);
       sandIdArr[i] += gridxgrid;
       const nextCell = document.querySelector(`[data-cellid="${sandIdArr[i]}"]`);
+      //check if next down cell is not movalble (i.e wall or last row)
       if(nextCell && nextCell.dataset.cannotmove){
-        sandIdArr[i] -= gridxgrid;
-        const currCell = document.querySelector(`[data-cellid="${sandIdArr[i]}"]`);
-        unDraw(sandIdArr[i] - gridxgrid);
-        arrayRemove(sandIdArr, sandIdArr[i]);
-        currCell.removeAttribute("data-issand");
-        currCell.setAttribute("data-cannotmove",true);
+        let leftdown = document.querySelector(`[data-cellid="${sandIdArr[i]-1}"]`);
+        let rightdown = document.querySelector(`[data-cellid="${sandIdArr[i] +1}"]`);
+        
+        //if left down and right down and next down is not movalble stay where it is
+        if(leftdown.dataset.cannotmove && rightdown.dataset.cannotmove){
+          sandIdArr[i] -= gridxgrid;
+          const currCell = document.querySelector(`[data-cellid="${sandIdArr[i]}"]`);
+          unDraw(sandIdArr[i] - gridxgrid);
+          arrayRemove(sandIdArr, sandIdArr[i]);
+          currCell.removeAttribute("data-issand");
+          currCell.setAttribute("data-cannotmove",true);
+        }
+
+        else if(!leftdown.dataset.cannotmove ){
+          sandIdArr[i]-=1;
+          unDraw(sandIdArr[i] + 1-gridxgrid  );
+          unDraw(sandIdArr[i] + 1-gridxgrid -gridxgrid );
+        }
+
+        else{
+          sandIdArr[i]+=1;
+
+          unDraw(sandIdArr[i] - 1-gridxgrid  );
+          unDraw(sandIdArr[i] - 1-gridxgrid -gridxgrid );
+        }
+   
 
       }
+
       else{
         unDraw(sandIdArr[i] - gridxgrid -gridxgrid );
          
       }
+
     }
   
   }
