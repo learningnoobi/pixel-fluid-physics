@@ -4,7 +4,7 @@ const mainscene = document.querySelector("#mainscene");
 const wallBtn = document.querySelector("#addWall");
 const sandBtn = document.querySelector("#addSand");
 
-let gridxgrid = 40
+let gridxgrid = 30
 
 root.style.setProperty("--row-columns", gridxgrid);
 
@@ -47,6 +47,7 @@ function cellListener(cell) {
     case "wall":
       cell.classList.add("wallIn");
       cell.setAttribute("data-iswall", true);
+      cell.setAttribute("data-cannotmove",true);
       break;
 
     case "sand":
@@ -55,7 +56,6 @@ function cellListener(cell) {
       sandIdArr = [...document.querySelectorAll(`[data-issand="${true}"]`)].map(i=>{
         return parseInt(i.dataset.cellid)
       });
-      console.log(sandIdArr)
      if(!sandInterval)
       {
         sandInterval = setInterval(moveSandDown, 10)
@@ -98,6 +98,7 @@ function unDraw(lastnum) {
     if (!currentCell) return
     currentCell.classList.remove("sandIn");
     currentCell.removeAttribute("data-issand");
+   
     
   
 }
@@ -105,7 +106,6 @@ function unDraw(lastnum) {
 function moveSandDown() {
 
   if(sandIdArr.length===0){
-    console.log(sandIdArr)
     console.log('clearing  timeout as length is ',sandIdArr.length)
      clearInterval(sandInterval)
         clearInterval(sandInterval);
@@ -115,27 +115,38 @@ function moveSandDown() {
      return;
 
   }
-  console.log('sand lengt is ',sandIdArr.length)
+  console.log('sand length is ',sandIdArr.length)
   for (let i = 0; i < sandIdArr.length; i++) {
-    if(sandIdArr[i] >Math.pow(gridxgrid, 2)) {
-      arrayRemove(sandIdArr, sandIdArr[i]);
-   
+    // const currCell = document.querySelector(`[data-cellid="${sandIdArr[i]+gridxgrid}"]`);
 
-      return
+    if(sandIdArr[i] >Math.pow(gridxgrid, 2)) {
+      
+      const currCell = document.querySelector(`[data-cellid="${sandIdArr[i]-gridxgrid}"]`);
+      currCell.removeAttribute("data-issand");
+      currCell.setAttribute("data-cannotmove",true);
+      arrayRemove(sandIdArr, sandIdArr[i]);
+     
+
     }
-    draw(sandIdArr[i]);
-    sandIdArr[i] += gridxgrid;
-    const nextCell = document.querySelector(`[data-cellid="${sandIdArr[i]}"]`);
-    if(nextCell && (
-      nextCell.dataset.iswall ||nextCell.dataset.iswater||nextCell.dataset.issand
-      )){
-      sandIdArr[i] -= gridxgrid;
-    
-      unDraw(sandIdArr[i] - gridxgrid );
-        // console.log('wall incoming')
+    else{
+      draw(sandIdArr[i]);
+      sandIdArr[i] += gridxgrid;
+      const nextCell = document.querySelector(`[data-cellid="${sandIdArr[i]}"]`);
+      if(nextCell && nextCell.dataset.cannotmove){
+        sandIdArr[i] -= gridxgrid;
+        const currCell = document.querySelector(`[data-cellid="${sandIdArr[i]}"]`);
+        unDraw(sandIdArr[i] - gridxgrid);
         arrayRemove(sandIdArr, sandIdArr[i]);
+        currCell.removeAttribute("data-issand");
+        currCell.setAttribute("data-cannotmove",true);
+
+      }
+      else{
+        unDraw(sandIdArr[i] - gridxgrid -gridxgrid );
+         
+      }
     }
-    unDraw(sandIdArr[i] - gridxgrid - gridxgrid);    
+  
   }
 
 }
